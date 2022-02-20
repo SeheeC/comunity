@@ -16,7 +16,7 @@
 	<resources mapping="/resources/**" location="/resources/" />
 	
 	<!-- 추가 설정 -->
-	<resources location="/resources/" mapping="/board/**"></resources>
+	<!-- <resources location="/resources/" mapping="/board/**"></resources> -->
 	
 	<resources mapping="/bower_components/**" location="/resources/bower_components/" />
 	<resources mapping="/dist/**" location="/resources/dist/" />

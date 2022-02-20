@@ -55,7 +55,7 @@
     <h1>Jogak comunity</h1>
     <p class="lead">‘커뮤니티 조각’은 모두가 쉽게 대화할 수 있는 공간입니다.</p>
     <p class="lead">
-      <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">가입하기</a>
+      <a href="/member/join" class="btn btn-lg btn-secondary fw-bold border-white bg-white">가입하기</a>
     </p>
   </main>
 
