@@ -6,4 +6,6 @@ public interface MemberService {
 	
 	public int join(MemberVO vo);
 	
+	public String checkID(String user_id);
+	
 }

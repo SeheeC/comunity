@@ -22,6 +22,12 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.join(vo);
 	}
+
+	@Override
+	public String checkID(String user_id) {
+		
+		return mapper.checkID(user_id);
+	}
 	
 	
 }
