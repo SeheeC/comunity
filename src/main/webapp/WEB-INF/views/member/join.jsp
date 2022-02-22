@@ -66,10 +66,12 @@
 					</div>
 				</div>
 				<div class="row">
+					<label for="userpwChk_state" id="userpwChk_state">비밀번호를 생성하세요.</label>
 					<input type="password" class="form-control" id="user_pw" name="user_pw">
 				</div>
 				<div class="row">
-					<input type="text" class="form-control" id="btn_userpw_chk" placeholder="비밀번호 확인">
+					<input type="text" class="form-control" id="user_pw2" placeholder="비밀번호를 동일하게 입력해 주세요.">
+					<button type="button" class="form-control" id="btn_userpw_chk">비밀번호 확인</button>
 				</div>
 				<div class="form-group row">
 					<input type="text" class="form-control" id="user_nm" name="user_nm" placeholder="이름">
@@ -83,7 +85,6 @@
 						<input type="text" class="form-control" id="user_email" name="user_email">
 					</div>
 					<div class="col-md-2">
-						<label for="user_email_chk">메일을 확인해 주세요.</label>
 						<button type="button" class="form-control" id="btn_useremail_chk">메일 인증 요청</button>
 					</div>
 					<div class="col-md-2">
@@ -91,7 +92,7 @@
 						<input type="text" class="form-control" id="user_email_code" name="user_email_code">
 					</div>
 					<div class="col-md-2">
-						<label id=user_email_chkstate>&nbsp;</label>
+						<label id="user_email_chkstate">&nbsp;</label>
 						<button type="button" class="form-control" id="btn_usermail">메일 인증 확인</button>
 					</div>
 				</div>
@@ -144,8 +145,13 @@
 		<script>
 			
 			$(document).ready(function(){
+
+
 				// ID 중복 Check
 				let idCheck = false;
+				
+				// 메일 인증 확인 체크
+				let emailConfirm = false;
 
 				$("#btn_userid_chk").on("click", function(){
 					idCheck = false;
@@ -163,7 +169,6 @@
 						dataType: 'text',
 						data: { user_id : user_id.val() },
 						success: function(data){
-							$("#btn_userid_chk").css("color", "red");
 							if(data == "Y"){
 								idCheck = true;
 								alert("사용 가능한 ID입니다.");
@@ -174,6 +179,80 @@
 						}	
 					});
 				});
+				
+				// 비밀번호 일치 확인
+				$("#btn_userpw_chk").on("click", function(){
+					let userPw1 = $("#user_pw").val();
+					let userPw2 = $("#user_pw2").val();
+
+					if (userPw1 != "" || userPw2 != ""){
+						if(userPw1 == userPw2){
+							alert("비밀번호가 일치합니다.")
+							$("#userpwChk_state").html("일치합니다.");
+							$("#userpwChk_state").css("color", "green");
+						}else{
+							alert("비밀번호가 일치하지 않습니다.")
+							$("#userpwChk_state").html(" 다시 입력하세요.");
+							$("#userpwChk_state").css("color", "red");
+							user_pw.focus();
+						}
+					}
+				});
+
+				// 이메일 인증 메일 보내기
+				$("#btn_useremail_chk").on("click", function(){
+					emailChkConfirm = false;
+					let user_email = $("#user_email");
+
+					if(user_email.val() == "" || user_email.val() == null){
+						alert("이메일을 입력해 주세요.");
+						user_email.focus();
+						return;
+					}
+
+					$.ajax({
+						url: '/member/sendMailCode',
+						type: 'get',
+						dataType: 'text',
+						data: {user_email : user_email.val()},
+						success: function(data){
+							if(data == "success"){
+								emailChkConfirm = true;
+								alert("인증 요청 메일이 발송되었습니다. 수신된 메일을 확인해 주세요.");
+							}else if(data == "fail"){
+								alert("이메일이 잘못되었습니다. 다시 확인해 주세요.");
+								user_email.focus();
+							}
+						}
+					});
+				});
+
+				// 메일 인증 확인
+				$("#btn_usermail").on("click", function(){
+					let user_email_code = $("#user_email_code");
+
+					if(user_email_code.val() == "" || user_email_code.val() == null){
+						alert("인증 코드를 입력해 주세요.");
+						user_email_code.focus();
+						return;
+					}
+
+					$.ajax({
+						url: '/member/emailConfirm',
+						type: 'get',
+						dataType: 'text',
+						data: { userEmailCode : user_email_code.val() },
+						success: function(data){
+							if(data == "success"){
+								alert("인증이 완료되었습니다.");
+							}else if(data == "fail"){
+								alert("인증이 실패했습니다.\n 인증 코드를 다시 입력하시거나 인증 요청을 재시도 해 주세요.");
+								user_email_code.val("");
+							}
+						}
+					});
+				});
+				
 			});
 
 		</script>

@@ -42,7 +42,22 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	
+
 	<mybatis-spring:scan base-package="com.comunity.mapper" />
 	<context:component-scan base-package="com.comunity.service" />
+	
+	<!-- 지메일 이용시 보안수준 설정을 해야한다. https://myaccount.google.com/security : 보안수준이 낮은 앱 액세스 허용설정 -->
+	 <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	 	<property name="host"  value="smtp.gmail.com" />
+		<property name="port" value="587"></property>
+		<property name="username" value="seeh0908@gmail.com"></property>
+		<property name="password" value="tpgml9651"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	 </bean>
+	
 </beans>
