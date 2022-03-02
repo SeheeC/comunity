@@ -28,6 +28,31 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.checkID(user_id);
 	}
+
+	@Override
+	public MemberVO login(String user_id) {
+		// TODO Auto-generated method stub
+		return mapper.login(user_id);
+	}
+
+	@Override
+	public int modify(MemberVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.modify(vo);
+	}
+
+	@Override
+	public int regDelete(String user_id, String user_pw) {
+		// TODO Auto-generated method stub
+		
+		int count = 0;
+		
+		if(user_pw.equals(mapper.currentPwConfirm(user_id))) {
+			count = mapper.regDelete(user_id);
+		}
+		
+		return count;
+	}
 	
 	
 }

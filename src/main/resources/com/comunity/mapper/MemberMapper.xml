@@ -5,7 +5,7 @@
   
   <mapper namespace="com.comunity.mapper.MemberMapper">
   
-  	<!-- <insert id="join" parameterType="com.comunity.domain.MemberVO">
+  	<insert id="join" parameterType="com.comunity.domain.MemberVO">
   		INSERT INTO member_tb(
 	  		user_id,
 	  		user_nm,
@@ -16,7 +16,8 @@
 	  		addr_front,
 	  		addr_back,
 	  		phone_no,
-	  		email_chk)
+	  		email_chk
+  		)
   		VALUES(
   			#{user_id},
 	  		#{user_nm},
@@ -29,7 +30,7 @@
 	  		#{phone_no},
 	  		#{email_chk}
   		)
-  	</insert> -->
+  	</insert>
   
   	<select id="checkID" resultType="String">
   		SELECT
@@ -39,5 +40,49 @@
 		WHERE
 			user_id = #{user_id}
   	</select>
+  	
+  	<select id="login" resultType="com.comunity.domain.MemberVO">
+  		<!-- user_id, user_nm, user_nick, user_pw, user_email, addr_no, addr_front, addr_back, phone_no, email_chk, reg_date, my_post, my_cmt, my_itr -->
+  		SELECT
+  			user_id,
+	  		user_nm,
+	  		user_nick,
+	  		user_pw,
+	  		user_email,
+	  		addr_no,
+	  		addr_front,
+	  		addr_back,
+	  		phone_no,
+	  		email_chk,
+	  		reg_date,
+	  		my_post,
+	  		my_cmt,
+	  		my_itr
+  		FROM
+  			member_tb
+		WHERE
+			user_id = #{user_id}
+  	</select>
+  	
+  	<select id="currentPwConfirm" resultType="string">
+  		
+  		SELECT
+  			user_pw
+		FROM
+			member_tb
+		WHERE
+			user_id = #{user_id}
+			
+  	</select>
+  	
+  	<delete id="regDelete">
+  		
+  		DELETE FROM
+  			member_tb
+		WHERE
+			user_id = #{user_id}
+  		
+  	</delete>
+  	
   
   </mapper>

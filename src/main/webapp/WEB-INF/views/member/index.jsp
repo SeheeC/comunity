@@ -37,6 +37,14 @@
     <!-- Custom styles for this template -->
     <link href="/resources/css/cover.css" rel="stylesheet">
   </head>
+  <script>
+  	
+  	let msg = '${msg}'; // EL구문.  'modifyOk'
+  	if(msg == 'modifyOk'){
+  		alert("회원정보가 수정되었습니다.");
+  	}
+  
+  </script>
   <body class="d-flex h-100 text-center text-white bg-dark">
     
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -46,7 +54,8 @@
       <nav class="nav nav-masthead justify-content-center float-md-end">
         <a class="nav-link active" aria-current="page" href="#">홈</a>
         <a class="nav-link" href="#">게시판</a>
-        <a class="nav-link" href="/member/login">로그인</a>
+        <a class="nav-link" href="/member/mypage">나의 정보</a>
+        <a class="nav-link" href="/member/logout">로그아웃</a>
       </nav>
     </div>
   </header>
@@ -54,9 +63,9 @@
   <main class="px-3">
     <h1>Jogak comunity</h1>
     <p class="lead">‘커뮤니티 조각’은 모두가 쉽게 대화할 수 있는 공간입니다.</p>
-    <p class="lead">
+    <!-- <p class="lead">
       <a href="/member/join" class="btn btn-lg btn-secondary fw-bold border-white bg-white">가입하기</a>
-    </p>
+    </p> -->
   </main>
 
   <footer class="mt-auto text-white-50">

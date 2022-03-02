@@ -17,7 +17,7 @@ public class MemberVO {
 	private String addr_back;
 	private String phone_no;
 	private String email_chk;
-	private Date reg_date;
+	private String reg_date;
 	private Long my_post;
 	private Long my_cmt;
 	private Long my_itr;

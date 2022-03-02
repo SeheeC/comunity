@@ -10,13 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.comunity.domain.EmailDTO;
+import com.comunity.domain.MemberVO;
 import com.comunity.service.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -34,6 +38,8 @@ public class MemberController {
 	@Inject
 	private JavaMailSender mailSender;
 	
+	//////////////////////////////////////////////////////////////////// 회원 가입
+	
 	// 회원 가입 폼
 	@GetMapping("/join")
 	public void join() {
@@ -41,6 +47,15 @@ public class MemberController {
 	}
 	
 	// 회원 가입 저장
+	@PostMapping("/join")
+	public String joinOk(MemberVO vo, RedirectAttributes rttr) throws Exception{
+		
+		vo.setEmail_chk(!StringUtils.isEmpty(vo.getEmail_chk()) ? "Y" : "N");
+		
+		service.join(vo);
+		
+		return "redirect:/member/login";
+	}
 	
 	// 아이디 중복 체크
 	@ResponseBody
@@ -84,6 +99,8 @@ public class MemberController {
 			emailMessage.setText(dto.getEmail_code(), "UTF-8");
 			
 			mailSender.send(emailMessage);
+			
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -124,5 +141,102 @@ public class MemberController {
 		return entity;
 	}
 	
+	// 로그인 후 메인
+	@GetMapping("/index")
+	public void index() {
+		
+	}
+	
+	// 로그인
+	@ResponseBody
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestParam("user_id") String user_id, @RequestParam("user_pw") String user_pw, HttpSession session)throws Exception{
+		
+		String result = "";
+		ResponseEntity<String> entity = null;
+		
+		MemberVO vo = service.login(user_id);
+		
+		if(vo == null) {
+			result = "idFail";
+		}else{
+			if(user_pw.equals(vo.getUser_pw())) {
+				result = "success";
+				session.setAttribute("loginStatus", vo);
+			}else{
+				result = "pwFail";
+			}
+		}
+		
+		entity = new ResponseEntity<String>(result, HttpStatus.OK);
+		return entity;
+	}
+	
+	// 로그인 폼
+		@GetMapping("/login")
+		public void login() {
+			
+		}
+	
+	// 로그아웃
+	@GetMapping("/logout")
+	public String logout(HttpSession session, RedirectAttributes rttr) {
+		
+		session.invalidate();
+		
+		return "redirect:/";
+	}
+	
+	//////////////////////////////////////////////////////////////////// 회원 수정
+
+	// 회원 수정 폼
+	@GetMapping(value = {"/modify", "/mypage"})
+	public void modify(HttpSession session, Model model) {
+		
+		MemberVO vo = (MemberVO) session.getAttribute("loginStatus");
+		
+		String user_id = vo.getUser_id();
+		
+		model.addAttribute(service.login(user_id));
+	}
+	
+	// 회원 수정 저장
+	@PostMapping("/modify")
+	public String modify(MemberVO vo, HttpSession session, RedirectAttributes rttr) {
+		
+		String redirectURL = "";
+		
+		vo.setEmail_chk(!StringUtils.isEmpty(vo.getEmail_chk()) ? "Y" : "N");
+		
+		MemberVO session_vo = (MemberVO) session.getAttribute("loginStatus");
+		
+		if(vo.getUser_pw().equals(session_vo.getUser_pw())) {
+			service.modify(vo);
+			
+			redirectURL = "/";
+			rttr.addFlashAttribute("msg", "modifyOk");
+		}else{
+			redirectURL = "/member/modify";
+			rttr.addFlashAttribute("msg", "modifyFail");
+		}
+		
+		return "redirect:" + redirectURL;
+	}
+	
+	// 회원 탈퇴
+	@ResponseBody
+	@PostMapping("/regDelete")
+	public ResponseEntity<String> regDelete(@RequestParam("user_pw") String user_pw, HttpSession session){
+		
+		ResponseEntity<String> entity = null;
+		
+		MemberVO vo = (MemberVO) session.getAttribute("loginStatus");
+		
+		String user_id = vo.getUser_id();
+		
+		entity = new ResponseEntity<String>(String.valueOf(service.regDelete(user_id, user_pw)), HttpStatus.OK);
+		
+		return entity;
+	}
 	
 }
