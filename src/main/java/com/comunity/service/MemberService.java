@@ -14,5 +14,9 @@ public interface MemberService {
 
 	public int regDelete(String user_id, String user_pw);
 
+	public int changePw(String user_email, String user_pw);
+	
+	public String currentPwConfirm(String user_id, String cur_userPw, String cng_userPw);
+
 	
 }

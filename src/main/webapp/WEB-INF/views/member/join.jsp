@@ -60,7 +60,7 @@
 
 <body class="text-center">
 <%@include file="/WEB-INF/views/include/header.jsp" %>
-
+<div class="container">
 	<main class="form-signin">
 		<form action="/member/join" method="post" id="joinForm" onsubmit="return idPwChks()">
 			<!-- <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
@@ -155,7 +155,7 @@
 
 		</form>
 	</main>
-
+</div>
 <script>
 	
 	$(document).ready(function(){

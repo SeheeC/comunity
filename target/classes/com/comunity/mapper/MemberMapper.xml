@@ -75,6 +75,17 @@
 			
   	</select>
   	
+  	<update id="changeNewPw">
+	
+		UPDATE
+			member_tb
+		SET 
+			user_pw = #{cng_userPw}
+		WHERE
+			user_id = #{user_id}
+	
+	</update>
+  	
   	<delete id="regDelete">
   		
   		DELETE FROM
@@ -83,6 +94,20 @@
 			user_id = #{user_id}
   		
   	</delete>
+  	
+  	<update id="modify">
+  		UPDATE
+  			member_tb
+		SET
+			user_nick = #{user_nick},
+			user_email = #{user_email},
+			addr_no = #{addr_no},
+			addr_front = #{addr_front},
+			addr_back = #{addr_back},
+			phone_no = #{phone_no}
+		WHERE
+			user_id = #{user_id}
+  	</update>
   	
   
   </mapper>

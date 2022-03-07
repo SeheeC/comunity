@@ -141,12 +141,6 @@ public class MemberController {
 		return entity;
 	}
 	
-	// 로그인 후 메인
-	@GetMapping("/index")
-	public void index() {
-		
-	}
-	
 	// 로그인
 	@ResponseBody
 	@PostMapping("/login")
@@ -235,6 +229,24 @@ public class MemberController {
 		String user_id = vo.getUser_id();
 		
 		entity = new ResponseEntity<String>(String.valueOf(service.regDelete(user_id, user_pw)), HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	// 비밀번호 변경
+	@ResponseBody
+	@PostMapping("/changePw")
+	public ResponseEntity<String> changePw(@RequestParam("cur_userPw") String cur_userPw, @RequestParam("cng_userPw") String cng_userPw, HttpSession session){
+		
+		ResponseEntity<String> entity = null;
+		
+		MemberVO vo = (MemberVO) session.getAttribute("loginStatus");
+		
+		String user_id = vo.getUser_id();
+		
+		String result = service.currentPwConfirm(user_id, cur_userPw, cng_userPw);
+		
+		entity = new ResponseEntity<String>(result, HttpStatus.OK);
 		
 		return entity;
 	}

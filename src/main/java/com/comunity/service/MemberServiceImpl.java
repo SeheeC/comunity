@@ -31,19 +31,18 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberVO login(String user_id) {
-		// TODO Auto-generated method stub
+
 		return mapper.login(user_id);
 	}
 
 	@Override
 	public int modify(MemberVO vo) {
-		// TODO Auto-generated method stub
+
 		return mapper.modify(vo);
 	}
 
 	@Override
 	public int regDelete(String user_id, String user_pw) {
-		// TODO Auto-generated method stub
 		
 		int count = 0;
 		
@@ -53,6 +52,27 @@ public class MemberServiceImpl implements MemberService {
 		
 		return count;
 	}
+	
+	@Override
+	public int changePw(String user_email, String user_pw) {
+		return mapper.changePw(user_email, user_pw);
+	}
+
+	@Override
+	public String currentPwConfirm(String user_id, String cur_userPw, String cng_userPw) {
+		 
+		String result = "noPw";
+		 
+		if(cur_userPw.equals(mapper.currentPwConfirm(user_id))) {
+			
+			mapper.changeNewPw(user_id, cng_userPw);
+			result = "success";
+			
+		}
+		
+		return result;
+	}
+
 	
 	
 }

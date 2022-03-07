@@ -31,6 +31,10 @@
           font-size: 3.5rem;
         }
       }
+      
+      .form-margintop{
+      	margin-top:50px!important;
+      }
     </style>
 
 
@@ -40,7 +44,7 @@
 
   <body class="text-center">
   <%@include file="/WEB-INF/views/include/header.jsp" %>
-    <main class="form-signin">
+    <main class="form-signin form-margintop">
       <form>
         <!--     <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
         <h1 class="h3 mb-3 fw-normal">어서오세요! <br> 로그인하시겠어요?</h1>
@@ -94,7 +98,7 @@
             success: function(data){
               if(data == "success"){
             	alert("로그인 되었습니다.")
-                location.href = "/member/index";
+                location.href = "/";
               }else if(data == "idFail"){
                 alert("아이디를 확인해 주세요.");
                 user_id.focus();
