@@ -109,5 +109,28 @@
 			user_id = #{user_id}
   	</update>
   	
+	<!-- 아이디 찾기 -->
+	<select id="searchId" resultType="String">
+		SELECT
+			user_id, user_email, user_nm
+		FROM
+			member_tb
+		WHERE
+			user_nm = #{user_nm} AND
+			user_email = #{user_email}
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="searchPw" resultType="String">
+		SELECT
+			user_id, user_nm, user_email
+		FROM
+			member_tb
+		WHERE
+			user_id = #{user_id} AND
+			user_nm = #{user_nm} AND
+			user_email = #{user_email}
+	</select>
+  	
   
   </mapper>

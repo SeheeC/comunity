@@ -34,6 +34,21 @@ public class MemberServiceImpl implements MemberService {
 
 		return mapper.login(user_id);
 	}
+	
+	@Override
+	public String searchId(MemberVO vo, String user_nm, String user_email) {
+		// TODO Auto-generated method stub
+		
+		String user_id = vo.getUser_id();
+		
+		return mapper.searchId(user_id, user_nm, user_email);
+	}
+	
+	@Override
+	public String searchPw(String user_id, String user_nm, String user_email) {
+		// TODO Auto-generated method stub
+		return mapper.searchPw(user_id, user_nm, user_email);
+	}
 
 	@Override
 	public int modify(MemberVO vo) {
@@ -72,6 +87,8 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+
+
 
 	
 	

@@ -9,6 +9,10 @@ public interface MemberService {
 	public String checkID(String user_id);
 
 	public MemberVO login(String user_id);
+	
+	public String searchId(MemberVO vo, String user_nm, String user_email);
+	
+	public String searchPw(String user_id, String user_nm, String user_email);
 
 	public int modify(MemberVO vo);
 

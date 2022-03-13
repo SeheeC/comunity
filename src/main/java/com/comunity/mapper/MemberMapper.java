@@ -12,6 +12,10 @@ public interface MemberMapper {
 
 	public MemberVO login(String user_id);
 	
+	public String searchId(String user_id, String user_nm, String user_email);
+
+	public String searchPw(String user_id, String user_nm, String user_email);
+	
 	public void index();
 
 	public int modify(MemberVO vo);
@@ -23,5 +27,6 @@ public interface MemberMapper {
 	public String currentPwConfirm(String user_id);
 	
 	public int changeNewPw(@Param("user_id") String user_id, @Param("cng_userPw") String cng_userPw);
+
 	
 }

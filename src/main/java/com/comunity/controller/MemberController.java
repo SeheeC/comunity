@@ -181,6 +181,109 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	// 아이디 찾기 폼
+	@GetMapping("/searchId")
+	public void searchId() {
+		
+	}
+	
+	// 비밀번호 찾기 폼
+	@GetMapping("/searchPw")
+	public void searchPw() {
+			
+	}
+	
+	// 아이디 찾기
+	@ResponseBody
+	@PostMapping("/searchId")
+	public ResponseEntity<String> searchId(MemberVO vo, @RequestParam("user_nm") String user_nm, @RequestParam("user_email") String user_email) {
+		
+		ResponseEntity<String> entity = null;
+		
+		String user_id = vo.getUser_id();
+		
+		if(!StringUtils.isEmpty(service.searchId(vo, user_nm, user_email))) {
+			
+			EmailDTO dto = new EmailDTO("Jogak", "shhh0009@gmail.com", user_email, "Jogak Comunity 가입 아이디", user_id);
+			
+			MimeMessage message = mailSender.createMimeMessage();
+			
+			try {
+				
+				message.addRecipient(RecipientType.TO, new InternetAddress(user_email));
+				message.addFrom(new InternetAddress[] {new InternetAddress(dto.getSender_email(), dto.getSender_name())});
+				message.setSubject(dto.getEmail_title(), "UTF-8");
+				message.setText(dto.getEmail_code());
+				
+				mailSender.send(message);
+				
+				entity = new ResponseEntity<String>("success", HttpStatus.OK);
+				
+			}catch(Exception e) {
+				
+				e.printStackTrace();				
+				entity = new ResponseEntity<String>("fail", HttpStatus.BAD_REQUEST);
+				
+			}// try-catch 종료
+			
+		}else{
+			
+			entity = new ResponseEntity<String>("noNm", HttpStatus.OK);
+			entity = new ResponseEntity<String>("noMail", HttpStatus.OK);
+			
+		}// if 종료
+		
+		return entity;
+	}
+	
+	// 비밀번호 찾기
+	@ResponseBody
+	@PostMapping("/searchPw")
+	public ResponseEntity<String> searchPw(@RequestParam("user_id") String user_id, @RequestParam("user_nm") String user_nm, @RequestParam("user_email") String user_email) {
+			
+		ResponseEntity<String> entity = null;
+		
+		if(!StringUtils.isEmpty(service.searchPw(user_id, user_nm, user_email))) {
+		
+			String tempPw = makeEmailCode();
+			
+			EmailDTO dto = new EmailDTO("Jogak", "shhh0009@gmail.com", user_email, "Jogak Comunity 임시 비밀번호", tempPw);
+			
+			MimeMessage message = mailSender.createMimeMessage();
+			
+			try {
+				
+				message.addRecipient(RecipientType.TO, new InternetAddress(user_email));
+				message.addFrom(new InternetAddress[] {new InternetAddress(dto.getSender_email(), dto.getSender_name())});
+				message.setSubject(dto.getEmail_title(), "UTF-8");
+				message.setText(dto.getEmail_code());
+				
+				mailSender.send(message);
+				
+				String user_pw = tempPw;
+				service.changePw(user_email, user_pw);
+				
+				entity = new ResponseEntity<String>("success", HttpStatus.OK);
+				
+			}catch(Exception e) {
+				
+				e.printStackTrace();				
+				entity = new ResponseEntity<String>("fail", HttpStatus.BAD_REQUEST);
+				
+			}// try-catch 종료
+			
+		}else{
+			
+			entity = new ResponseEntity<String>("noId", HttpStatus.OK);
+			entity = new ResponseEntity<String>("noNm", HttpStatus.OK);
+			entity = new ResponseEntity<String>("noMail", HttpStatus.OK);
+			
+		}// if 종료
+		
+		return entity;
+	}
+	
+	
 	//////////////////////////////////////////////////////////////////// 회원 수정
 
 	// 회원 수정 폼
@@ -250,5 +353,7 @@ public class MemberController {
 		
 		return entity;
 	}
+	
+	
 	
 }

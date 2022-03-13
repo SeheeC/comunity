@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
   <!doctype html>
   <html lang="en">
 
@@ -60,7 +62,7 @@
 
 
         <div class="form-floating">
-          <a href="#" class="btn_SearchPw">아이디/비밀번호 찾기</a>
+          <a href="/member/searchId" class="btn_searchIdPw">아이디/비밀번호 찾기</a>
           <a href="/member/join" class="btn_join">회원가입</a>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit" id="btn_login">Login</button>
@@ -110,7 +112,11 @@
           });
         });
 
-      });
+        $("#btn_searchIdPw").on("click", function(){
+          location.href = "/member/searchId";
+        });
+
+      }); // 끝
     </script>
   </body>
 
