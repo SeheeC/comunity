@@ -10,7 +10,7 @@ public interface MemberService {
 
 	public MemberVO login(String user_id);
 	
-	public String searchId(MemberVO vo, String user_nm, String user_email);
+	public String searchId(String user_nm, String user_email);
 	
 	public String searchPw(String user_id, String user_nm, String user_email);
 
@@ -18,7 +18,7 @@ public interface MemberService {
 
 	public int regDelete(String user_id, String user_pw);
 
-	public int changePw(String user_email, String user_pw);
+	public int changePw(String user_id, String user_pw);
 	
 	public String currentPwConfirm(String user_id, String cur_userPw, String cng_userPw);
 

@@ -12,9 +12,9 @@ public interface MemberMapper {
 
 	public MemberVO login(String user_id);
 	
-	public String searchId(String user_id, String user_nm, String user_email);
+	public String searchId(@Param("user_nm") String user_nm,@Param("user_email") String user_email);
 
-	public String searchPw(String user_id, String user_nm, String user_email);
+	public String searchPw(@Param("user_id") String user_id,@Param("user_nm") String user_nm,@Param("user_email") String user_email);
 	
 	public void index();
 
@@ -22,7 +22,7 @@ public interface MemberMapper {
 
 	public int regDelete(String user_id);
 	
-	public int changePw(@Param("user_email") String user_email, @Param("user_pw") String user_pw);
+	public int changePw(@Param("user_id") String user_id, @Param("user_pw") String user_pw);
 
 	public String currentPwConfirm(String user_id);
 	

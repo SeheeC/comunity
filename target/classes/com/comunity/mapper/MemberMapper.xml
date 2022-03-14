@@ -75,6 +75,17 @@
 			
   	</select>
   	
+  	<update id="changePw">
+	
+		UPDATE
+			member_tb
+		SET 
+			user_pw = #{user_pw}
+		WHERE
+			user_id = #{user_id}
+	
+	</update>
+  	
   	<update id="changeNewPw">
 	
 		UPDATE
@@ -112,7 +123,7 @@
 	<!-- 아이디 찾기 -->
 	<select id="searchId" resultType="String">
 		SELECT
-			user_id, user_email, user_nm
+			user_id
 		FROM
 			member_tb
 		WHERE

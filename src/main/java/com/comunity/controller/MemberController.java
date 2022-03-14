@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.comunity.domain.EmailDTO;
 import com.comunity.domain.MemberVO;
+import com.comunity.mapper.MemberMapper;
 import com.comunity.service.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -196,13 +197,13 @@ public class MemberController {
 	// 아이디 찾기
 	@ResponseBody
 	@PostMapping("/searchId")
-	public ResponseEntity<String> searchId(MemberVO vo, @RequestParam("user_nm") String user_nm, @RequestParam("user_email") String user_email) {
+	public ResponseEntity<String> searchId(@RequestParam("user_nm") String user_nm, @RequestParam("user_email") String user_email) {
 		
 		ResponseEntity<String> entity = null;
 		
-		String user_id = vo.getUser_id();
+		String user_id = service.searchId(user_nm, user_email);
 		
-		if(!StringUtils.isEmpty(service.searchId(vo, user_nm, user_email))) {
+		if(!StringUtils.isEmpty(service.searchId(user_nm, user_email))) {
 			
 			EmailDTO dto = new EmailDTO("Jogak", "shhh0009@gmail.com", user_email, "Jogak Comunity 가입 아이디", user_id);
 			
@@ -261,7 +262,7 @@ public class MemberController {
 				mailSender.send(message);
 				
 				String user_pw = tempPw;
-				service.changePw(user_email, user_pw);
+				service.changePw(user_id, user_pw);
 				
 				entity = new ResponseEntity<String>("success", HttpStatus.OK);
 				

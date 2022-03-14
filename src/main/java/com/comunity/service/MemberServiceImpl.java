@@ -36,12 +36,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public String searchId(MemberVO vo, String user_nm, String user_email) {
+	public String searchId(String user_nm, String user_email) {
 		// TODO Auto-generated method stub
 		
-		String user_id = vo.getUser_id();
-		
-		return mapper.searchId(user_id, user_nm, user_email);
+		return mapper.searchId(user_nm, user_email);
 	}
 	
 	@Override
@@ -69,8 +67,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public int changePw(String user_email, String user_pw) {
-		return mapper.changePw(user_email, user_pw);
+	public int changePw(String user_id, String user_pw) {
+		return mapper.changePw(user_id, user_pw);
 	}
 
 	@Override
