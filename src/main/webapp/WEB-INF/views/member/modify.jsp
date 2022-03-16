@@ -169,9 +169,8 @@
 							<button type="button" id="btn_modify" class="btn btn-primary">회원 정보 수정하기</button>
 						</div>
 					</div>
-
-
 				</form>
+				<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 			</main>
 
 			<script>

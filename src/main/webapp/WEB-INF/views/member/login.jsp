@@ -34,9 +34,6 @@
         }
       }
       
-      .form-margintop{
-      	margin-top:50px!important;
-      }
     </style>
 
 
@@ -44,32 +41,38 @@
     <link href="/resources/css/signin.css" rel="stylesheet">
   </head>
 
-  <body class="text-center">
-  <%@include file="/WEB-INF/views/include/header.jsp" %>
-    <main class="form-signin form-margintop">
-      <form>
-        <!--     <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
-        <h1 class="h3 mb-3 fw-normal">어서오세요! <br> 로그인하시겠어요?</h1>
-
-        <div class="form-floating">
-          <input type="text" class="form-control" id="user_id" name="user_id" placeholder="ID">
-          <label for="user_id">ID</label>
-        </div>
-        <div class="form-floating">
-          <input type="password" class="form-control" id="user_pw" name="user_pw" placeholder="Password">
-          <label for="user_pw">Password</label>
-        </div>
-
-
-        <div class="form-floating">
-          <a href="/member/searchId" class="btn_searchIdPw">아이디/비밀번호 찾기</a>
-          <a href="/member/join" class="btn_join">회원가입</a>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit" id="btn_login">Login</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-      </form>
-    </main>
-
+  <body class="d-flex h-100 text-center text-white bg-dark">
+	  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+	  	<%@include file="/WEB-INF/views/include/header.jsp" %>
+	  	
+	    <div class="form-signin h-100 m-auto d-flex">
+	    	<div class="p-3 m-auto">
+		        <div class="form-group">
+		        	<h1 class="h3 mb-3 fw-normal">어서오세요! <br> 로그인하시겠어요?</h1>
+				</div>
+				
+		        <div class="form-group mt-5">
+		          <label for="user_id">ID</label>
+		          <input type="text" class="form-control" id="user_id" name="user_id" placeholder="ID">
+		        </div>
+		        <div class="form-group mt-3">
+		          <label for="user_pw">Password</label>
+		          <input type="password" class="form-control" id="user_pw" name="user_pw" placeholder="Password">
+		        </div>
+		
+		
+		        <div class="form-group mt-5">
+		          <a href="/member/searchId" class="btn_searchIdPw">아이디/비밀번호 찾기</a>
+		          <a href="/member/join" class="btn_join">회원가입</a>
+		        </div>
+		        
+		        <div class="form-group mt-5">
+		        	<button class="w-100 btn btn-lg btn-primary" type="submit" id="btn_login">Login</button>
+		        </div>
+	      	</div>
+	    </div>
+	    <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	</div>
     <script>
 
       $(document).ready(function(){

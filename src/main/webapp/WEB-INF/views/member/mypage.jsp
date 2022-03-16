@@ -34,7 +34,7 @@
 				}
 			}
 
-			div {
+			.form-row, .row, .form-group {
 				margin-bottom: 30px;
 			}
 
@@ -198,17 +198,9 @@
 							<button type="button" class="form-control" id="btn_RegDelete">회원 탈퇴</button>
 						</div>
 					</div>
-
-
-					<!-- 	    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div> -->
-
-
-				</form>
+				</form>				
 			</main>
+			<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 			<script>
 

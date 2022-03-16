@@ -48,27 +48,23 @@
 
     
   </head>
-  <body class="d-flex h-100 text-center text-white bg-dark">
+<body class="d-flex h-100 text-center text-white bg-dark">
   
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-  <%@ include file="/WEB-INF/views/include/header.jsp" %>
-
-  <main class="px-3 mt-auto">
-    <h1>Jogak comunity</h1>
-    <p class="lead">‘커뮤니티 조각’은 모두가 쉽게 대화할 수 있는 공간입니다.</p>
-    <p class="lead">
-    	<c:if test="${sessionScope.loginStatus == null }">
-      		<a href="/member/join" class="btn btn-lg btn-secondary fw-bold border-white bg-white join-btn">가입하기</a>
-      	</c:if>
-    </p>
-  </main>
-  
-  <footer class="mt-auto text-white-50">
-    <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
-  </footer>
-</div>
-
-
-    
-  </body>
+	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+		<%@ include file="/WEB-INF/views/include/header.jsp" %>
+		
+		<main class="px-3 m-auto">
+			<h1>Jogak comunity</h1>
+			<p class="lead">‘커뮤니티 조각’은 모두가 쉽게 대화할 수 있는 공간입니다.</p>
+			<p class="lead">
+			<c:if test="${sessionScope.loginStatus == null }">
+				<a href="/member/join" class="btn btn-lg btn-secondary fw-bold border-white bg-white join-btn">가입하기</a>
+			</c:if>
+			</p>
+		</main>
+				
+	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	</div>
+	
+</body>
 </html>

@@ -54,7 +54,7 @@
 				<!-- 로그인 이후 상태 표시 -->
 				<c:if test="${sessionScope.loginStatus != null }">
 					<a class="nav-link active" aria-current="page" href="/">홈</a>
-					<a class="nav-link" href="#">게시판</a>
+					<a class="nav-link" href="/post/list">게시판</a>
 					<a class="nav-link" href="/member/mypage">나의 정보</a>
 	       			<a class="nav-link" href="/member/logout">로그아웃</a>
 				</c:if>

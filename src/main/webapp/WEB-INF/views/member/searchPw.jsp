@@ -176,6 +176,7 @@
 
 			}); // 끝
 		</script>
+		<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>
 
 </html>
