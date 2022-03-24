@@ -5,4 +5,23 @@
   
   <mapper namespace="com.comunity.mapper.PostMapper">
   
+  	<insert id="insert" parameterType="com.comunity.domain.PostVO">
+  		INSERT INTO post_tb(pst_no, pst_title, user_id, pst_content, pst_writer)
+  		VALUES(seq_post.nextval, #{pst_title}, #{user_id}, #{pst_content}, #{pst_writer})
+  	</insert>
+  	
+  	<select id="getList" resultType="com.comunity.domain.PostVO">
+  		SELECT pst_no, pst_title, pst_content, pst_writer, pst_wr_date, pst_update_date, pst_hit, pst_itr, pst_cmt_cnt FROM post_tb
+  	</select>
+  	
+  	<update id="update">
+  		UPDATE post_tb
+  		SET pst_title = #{pst_title}, pst_content = #{pst_content}, pst_update_date = #{pst_update_date}
+  		WHERE pst_no = #{pst_no}
+  	</update>
+  	
+  	<delete id="delete">
+  		DELETE FROM post_tb WHERE pst_title = #{pst_title}
+  	</delete>
+  
   </mapper>

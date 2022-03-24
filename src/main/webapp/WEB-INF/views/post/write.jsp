@@ -115,11 +115,19 @@
                   <label for="pst_title">글 제목</label>
                   <input type="text" class="form-control" id="pst_title" name="pst_title">
                 </div>
-                <div class="form-group">
-                  <label for="pst_writer">작성자</label>
-                  <input type="text" class="form-control" id="pst_writer" name="pst_writer"
-                    value='<c:out value="${MemberVO.user_nm}" />' readonly>
+                <div class="row">
+	                <div class="col-md-6">
+	                  <label for="pst_writer">작성자</label>
+	                  <input type="text" class="form-control" id="pst_writer" name="pst_writer"
+	                    value="<c:out value='${loginStatus.user_nick}' />" readonly>
+	                </div>    
+                  	<div class="col-md-6">
+	                  <label for="pst_writer">아이디</label>
+	                  <input type="text" class="form-control" id="user_id" name="user_id"
+	                    value="<c:out value='${loginStatus.user_id}' />" readonly>
+	               	</div>
                 </div>
+                
                 <div class="form-group">
                   <label for="pst_content">내용</label>
                   <textarea class="form-control" rows="3" id="pst_content" name="pst_content"></textarea>
