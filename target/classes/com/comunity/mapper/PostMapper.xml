@@ -5,6 +5,26 @@
   
   <mapper namespace="com.comunity.mapper.PostMapper">
   
+  	<sql id="criteria">
+  		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+  			<foreach collection="typeArr" item="type">
+  				<trim prefix="OR">
+  					<choose>
+  						<when test="type == 'T'.toString()">
+  							title like '%' || #{keyword} || '%'
+  						</when>
+  						<when test="type == 'C'.toString()">
+  							content like '%' || #{keyword} || '%'
+  						</when>
+  						<when test="type == 'W'.toString()">
+  							writer like '%' || #{keyword} || '%'
+  						</when>
+  					</choose>
+  				</trim>
+  			</foreach>
+  		</trim>
+  	</sql>
+  	
   	<insert id="insert" parameterType="com.comunity.domain.PostVO">
   		INSERT INTO post_tb(pst_no, pst_title, user_id, pst_content, pst_writer)
   		VALUES(seq_post.nextval, #{pst_title}, #{user_id}, #{pst_content}, #{pst_writer})
@@ -23,5 +43,31 @@
   	<delete id="delete">
   		DELETE FROM post_tb WHERE pst_title = #{pst_title}
   	</delete>
+  	
+  	<select id="getListWithPaging" parameterType="com.comunity.domain.Criteria" resultType="com.comunity.domain.PostVO">
+  		<![CDATA[
+  			SELECT pst_no, pst_title, pst_content, pst_writer, pst_wr_date, pst_update_date, pst_hit, pst_itr, pst_cmt_cnt
+  			FROM (
+  				SELECT /*+ index_desc(post_tb pk_post) */ rownum rn, pst_no, pst_title, pst_content, pst_writer, pst_wr_date, pst_update_date, pst_hit, pst_itr, pst_cmt_cnt
+  				FROM post_tb
+  				WHERE
+  		]]>
+  		
+  		<include refid="criteria"></include>
+  		
+  		<![CDATA[
+  			rownum <= (#{pageNum} * #{amount})
+  			)
+  			WHRER rn > ((#{pageNum) - 1) * #{amount})
+  		]]>
+  	</select>
+  	
+  	<select id="getTotalCount" resultType="int">
+  		SELECT count(*) FROM post_tb WHERE
+  		
+  		<include refid="criteria"></include>
+  		
+  		bno > 0
+  	</select>
   
   </mapper>

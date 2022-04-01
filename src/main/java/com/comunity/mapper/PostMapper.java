@@ -16,5 +16,9 @@ public interface PostMapper {
 	public int update(PostVO post);
 	
 	public int delete(Long pst_no);
+
+	public List<PostVO> getListWithPaging(Criteria cri);
+
+	public int getTotalCount(Criteria cri);
 	
 }

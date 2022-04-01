@@ -11,6 +11,10 @@ public interface PostService {
 	
 	public List<PostVO> getList();
 	
+	public List<PostVO> getListWithPaging(Criteria cri);
+	
+	public int getTotalCount(Criteria cri);
+	
 	public PostVO get(Long pst_no);
 	
 	public void modify(PostVO post);

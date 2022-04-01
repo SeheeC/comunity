@@ -56,5 +56,17 @@ public class PostServiceImpl implements PostService {
 		mapper.delete(pst_no);
 	}
 
+	@Override
+	public List<PostVO> getListWithPaging(Criteria cri) {
+		// TODO Auto-generated method stub
+		return mapper.getListWithPaging(cri);
+	}
+
+	@Override
+	public int getTotalCount(Criteria cri) {
+		// TODO Auto-generated method stub
+		return mapper.getTotalCount(cri);
+	}
+
 
 }

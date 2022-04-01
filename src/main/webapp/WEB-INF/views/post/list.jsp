@@ -105,6 +105,11 @@
           background-color: white;
           color: black;
         }
+        
+        .page-list{
+          margin-top: 50px;
+        }
+        
       </style>
 
       <div class="row">
@@ -154,7 +159,7 @@
         </table>
 
         <!-- list nav bar -->
-        <div class="row">
+        <div class="row page-list">
           <div class="col-sm-6">
             <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1 to 10 of 57
               entries</div>
