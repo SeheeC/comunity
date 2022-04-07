@@ -2,21 +2,18 @@ package com.comunity.controller;
 
 import java.util.List;
 
-import javax.crypto.spec.PSource;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.comunity.domain.MemberVO;
+import com.comunity.domain.Criteria;
+import com.comunity.domain.PageDTO;
 import com.comunity.domain.PostVO;
-import com.comunity.service.MemberService;
 import com.comunity.service.PostService;
 
 import lombok.AllArgsConstructor;
@@ -51,20 +48,47 @@ public class PostController {
 	
 	// 게시판 글 목록
 	@GetMapping("/list")
-	public void list(Model model) {
+	public void list(Criteria cri, Model model) {
 		
+		// 1) list.jsp(view) 목록 data
 		List<PostVO> list = service.getList();
 		model.addAttribute("list", list);
+		
+		// list.jsp(view) paging
+		int total = service.getTotalCount(cri);
+		
+		PageDTO pageDTO = new PageDTO(cri, total);
+		model.addAttribute("pageMaker", pageDTO);
 		
 	}
 	
 	// 게시물 읽기, 수정 form
 	@GetMapping({"/get", "/modify"})
-	public void get(@RequestParam("pst_no") Long pst_no, Model model) {
+	public void get(@RequestParam("pst_no") Long pst_no, @ModelAttribute("cri") Criteria cri, Model model) {
+		
+		log.info("get..." + pst_no);
 		
 		PostVO post = service.get(pst_no);
 		model.addAttribute("post", post);
 		
+	}
+	
+	@PostMapping("/modify") 
+	public String modify(PostVO post, Criteria cri, RedirectAttributes rttr) {
+		
+		log.info("modify: " + post);
+		
+		service.modify(post);
+		
+		return "redirect:/post/list" + cri.getListLink();
+	}
+	
+	@PostMapping("/remove")   //   /board/remove
+	public String remove(@RequestParam("pst_no") Long pst_no, Criteria cri, RedirectAttributes rttr) {
+		
+		service.delete(pst_no);
+
+		return "redirect:/post/list" + cri.getListLink();
 	}
 	
 }

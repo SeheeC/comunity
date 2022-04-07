@@ -30,6 +30,11 @@
   		VALUES(seq_post.nextval, #{pst_title}, #{user_id}, #{pst_content}, #{pst_writer})
   	</insert>
   	
+  	<select id="get" parameterType="Long" resultType="com.comunity.domain.PostVO">
+		SELECT pst_no, pst_title, user_id, pst_content, pst_writer, pst_wr_date, pst_update_date
+		FROM post_tb WHERE pst_no = #{pst_no}
+	</select>
+  	
   	<select id="getList" resultType="com.comunity.domain.PostVO">
   		SELECT pst_no, pst_title, pst_content, pst_writer, pst_wr_date, pst_update_date, pst_hit, pst_itr, pst_cmt_cnt FROM post_tb
   	</select>
@@ -67,7 +72,7 @@
   		
   		<include refid="criteria"></include>
   		
-  		bno > 0
+  		pst_no > 0
   	</select>
   
   </mapper>

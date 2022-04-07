@@ -2,6 +2,8 @@ package com.comunity.service;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.comunity.domain.Criteria;
 import com.comunity.domain.PostVO;
 

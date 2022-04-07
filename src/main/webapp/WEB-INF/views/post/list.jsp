@@ -42,6 +42,57 @@
     .form-group {
       margin-top: 30px;
     }
+    
+    .uploadResult {
+	  width: 100%;
+	  background-color: gray;
+	}
+	
+	.uploadResult ul {
+	  display: flex;
+	  flex-flow: row;
+	  justify-content: center;
+	  align-items: center;
+	}
+	
+	.uploadResult ul li {
+	  list-style: none;
+	  padding: 10px;
+	}
+	
+	.uploadResult ul li img {
+	  width: 100px;
+	}
+	
+	.bigPictureWrapper {
+	  position: absolute;
+	  display: none;
+	  justify-content: center;
+	  align-items: center;
+	  top: 0%;
+	  width: 100%;
+	  height: 100%;
+	  background-color: gray;
+	  z-index: 100;
+	}
+	
+	.bigPicture {
+	  position: relative;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	}
+	
+	.pst-table {
+	  margin-top: 50px;
+	  background-color: white;
+	  color: black;
+	}
+	
+	.list-container, .paging-container{
+		margin-top: 50px !important;
+	}
+	
   </style>
 
   <!-- Custom styles for this template -->
@@ -57,62 +108,7 @@
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <%@ include file="/WEB-INF/views/include/header.jsp" %>
 
-      <style>
-        .uploadResult {
-          width: 100%;
-          background-color: gray;
-        }
-
-        .uploadResult ul {
-          display: flex;
-          flex-flow: row;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .uploadResult ul li {
-          list-style: none;
-          padding: 10px;
-        }
-
-        .uploadResult ul li img {
-          width: 100px;
-        }
-      </style>
-
-      <style>
-        .bigPictureWrapper {
-          position: absolute;
-          display: none;
-          justify-content: center;
-          align-items: center;
-          top: 0%;
-          width: 100%;
-          height: 100%;
-          background-color: gray;
-          z-index: 100;
-        }
-
-        .bigPicture {
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .pst-table {
-          margin-top: 50px;
-          background-color: white;
-          color: black;
-        }
-        
-        .page-list{
-          margin-top: 50px;
-        }
-        
-      </style>
-
-      <div class="row">
+      <div class="row list-container">
         <table class="pst-table">
           <thead>
             <tr>
@@ -127,7 +123,7 @@
           </thead>
           <tbody>
             <c:forEach items="${list}" var="post" varStatus="status">
-              <tr role="row" class="<c:if test=" ${status.count % 2 == 0}">odd</c:if>
+              <tr role="row" class="<c:if test=" ${status.count % 2==0}">odd</c:if>
                 <c:if test="${status.count % 2 != 0}">even</c:if>">
                 <td class="sorting_1">
                   <c:out value="${post.pst_no }"></c:out>
@@ -158,12 +154,8 @@
 
         </table>
 
-        <!-- list nav bar -->
-        <div class="row page-list">
-          <div class="col-sm-6">
-            <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1 to 10 of 57
-              entries</div>
-          </div>
+        <!-- list nav bar
+        <div class="row">
           <div class="col-sm-6">
             <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
               <ul class="pagination">
@@ -186,11 +178,75 @@
               </ul>
             </div>
           </div>
-        </div>
+        </div> -->
+        
+        <div class="container paging-container"><!-- paging row -->
+			<div class="row">
+				<div class="dataTables_info col-sm-8">
+					<form id="searchForm" action="/post/list" method="get">
+						<select name="type">
+							<option value=""
+								<c:out value="${pageMaker.cri.type == null? 'selected':'' }" />>--</option>
+							<option value="T"
+								<c:out value="${pageMaker.cri.type eq 'T'? 'selected':'' }" />>제목</option>
+							<option value="C"
+								<c:out value="${pageMaker.cri.type eq 'C'? 'selected':'' }" />>내용</option>
+							<option value="W"
+								<c:out value="${pageMaker.cri.type eq 'W'? 'selected':'' }" />>작성자</option>
+							<option value="TC"
+								<c:out value="${pageMaker.cri.type eq 'TC'? 'selected':'' }" />>제목+내용</option>
+							<option value="TW"
+								<c:out value="${pageMaker.cri.type eq 'TW'? 'selected':'' }" />>제목+작성자</option>
+							<option value="TWC"
+								<c:out value="${pageMaker.cri.type eq 'TWC'? 'selected':'' }" />>전체</option>
+						</select>
+							<input type="text" name="keyword" value="<c:out value="${ pageMaker.cri.keyword}" />">
+							<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+							<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+							<button class="btn btn-primary">Search</button>
+					</form>
+					<!--
+					<div class="dataTables_info" id="example2_info" role="status"
+						aria-live="polite">Showing 1 to 10 of 57 entries</div>
+						-->
+				</div>
+				<div class="col-sm-4">
+					<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+						<ul class="pagination">
+						<c:if test="${pageMaker.prev }">
+							<li class='paginate_button previous ${pageMaker.prev ? "": "disabled" }'
+								id="example2_previous"><a href="${pageMaker.startPage - 1}"
+								aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li>
+						</c:if>
+						<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num">	
+							<li class='paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }'><a href="${num}"
+								aria-controls="example2" data-dt-idx="1" tabindex="0">${num}</a></li>
+						</c:forEach>
+						<c:if test="${pageMaker.next }">	
+							<li class="paginate_button next" id="example2_next"><a
+								href="${pageMaker.endPage + 1}" aria-controls="example2" data-dt-idx="7"
+								tabindex="0">Next</a></li>
+						</c:if>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!--prev,page number, next 를 클릭하면 아래 form이 작동된다.-->
+			<form id="actionForm" action="/post/list" method="get">
+				<!--list.jsp 가 처음 실행되었을 때 pageNum의 값을 사용자가 선택한 번호의 값으로 변경-->
+				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+				<input type="hidden" name="type" value="${pageMaker.cri.type}">
+				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				<!--글번호추가-->
+			</form>
+
+
+		</div><!-- paging-container -->
 
         <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-      </div>
-  </div>
+      </div><!-- row -->
+  </div><!-- cover-container -->
 
   <script>
     $(document).ready(function () {

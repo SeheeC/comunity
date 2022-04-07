@@ -2,6 +2,8 @@ package com.comunity.mapper;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.comunity.domain.Criteria;
 import com.comunity.domain.PostVO;
 
@@ -11,7 +13,7 @@ public interface PostMapper {
 	
 	public List<PostVO> getList();
 	
-	public PostVO get(Long pst_no);
+	public PostVO get(@RequestParam("pst_no") Long pst_no);
 	
 	public int update(PostVO post);
 	
