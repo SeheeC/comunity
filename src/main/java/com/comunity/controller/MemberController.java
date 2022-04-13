@@ -157,7 +157,7 @@ public class MemberController {
 		}else{
 			if(user_pw.equals(vo.getUser_pw())) {
 				result = "success";
-				session.setAttribute("loginStatus", vo);
+				session.setAttribute("userStatus", vo);
 			}else{
 				result = "pwFail";
 			}
@@ -291,11 +291,13 @@ public class MemberController {
 	@GetMapping(value = {"/modify", "/mypage"})
 	public void modify(HttpSession session, Model model) {
 		
-		MemberVO vo = (MemberVO) session.getAttribute("loginStatus");
+		
+		MemberVO vo = (MemberVO) session.getAttribute("userStatus");
 		
 		String user_id = vo.getUser_id();
 		
 		model.addAttribute(service.login(user_id));
+		
 	}
 	
 	// 회원 수정 저장
@@ -306,7 +308,7 @@ public class MemberController {
 		
 		vo.setEmail_chk(!StringUtils.isEmpty(vo.getEmail_chk()) ? "Y" : "N");
 		
-		MemberVO session_vo = (MemberVO) session.getAttribute("loginStatus");
+		MemberVO session_vo = (MemberVO) session.getAttribute("userStatus");
 		
 		if(vo.getUser_pw().equals(session_vo.getUser_pw())) {
 			service.modify(vo);
@@ -328,7 +330,7 @@ public class MemberController {
 		
 		ResponseEntity<String> entity = null;
 		
-		MemberVO vo = (MemberVO) session.getAttribute("loginStatus");
+		MemberVO vo = (MemberVO) session.getAttribute("userStatus");
 		
 		String user_id = vo.getUser_id();
 		
@@ -344,7 +346,7 @@ public class MemberController {
 		
 		ResponseEntity<String> entity = null;
 		
-		MemberVO vo = (MemberVO) session.getAttribute("loginStatus");
+		MemberVO vo = (MemberVO) session.getAttribute("userStatus");
 		
 		String user_id = vo.getUser_id();
 		

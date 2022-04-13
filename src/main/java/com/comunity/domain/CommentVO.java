@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 public class CommentVO {
 
-	private Long cmt_no;
+	private Long rno;
+	private Long pst_no;
 	private String cmt_writer;
 	private Date cmt_date;
 	private String cmt_content;

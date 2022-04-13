@@ -57,8 +57,11 @@
 			<h1>Jogak comunity</h1>
 			<p class="lead">‘커뮤니티 조각’은 모두가 쉽게 대화할 수 있는 공간입니다.</p>
 			<p class="lead">
-			<c:if test="${sessionScope.loginStatus == null }">
+			<c:if test="${sessionScope.userStatus == null }">
 				<a href="/member/join" class="btn btn-lg btn-secondary fw-bold border-white bg-white join-btn">가입하기</a>
+			</c:if>
+			<c:if test="${sessionScope.userStatus != null }">
+				<a href="/post/write" class="btn btn-lg btn-secondary fw-bold border-white bg-white join-btn">글 쓰기</a>
 			</c:if>
 			</p>
 		</main>

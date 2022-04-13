@@ -2,15 +2,12 @@ package com.comunity.domain;
 
 import lombok.Data;
 
+// 파일업로드 연습용
 @Data
-public class PostAttachVO {
-	// 첨부 파일
-	
+public class AttachFileDTO {
+
 	private String uuid;
 	private String uploadPath;
 	private String fileName;
-	private String fileType;
-	
-	private Long bno;
-	
+	private boolean image;
 }

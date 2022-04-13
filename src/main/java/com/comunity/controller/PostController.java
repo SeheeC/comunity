@@ -35,6 +35,7 @@ public class PostController {
 	
 	// 글 작성 저장
 	@PostMapping("/write")
+	
 	public String write(PostVO post, RedirectAttributes rttr) {
 		
 		if(post.getAttachList() != null) {
@@ -46,12 +47,13 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 	
+	
 	// 게시판 글 목록
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
 		
 		// 1) list.jsp(view) 목록 data
-		List<PostVO> list = service.getList();
+		List<PostVO> list = service.getListWithPaging(cri);
 		model.addAttribute("list", list);
 		
 		// list.jsp(view) paging
@@ -66,8 +68,6 @@ public class PostController {
 	@GetMapping({"/get", "/modify"})
 	public void get(@RequestParam("pst_no") Long pst_no, @ModelAttribute("cri") Criteria cri, Model model) {
 		
-		log.info("get..." + pst_no);
-		
 		PostVO post = service.get(pst_no);
 		model.addAttribute("post", post);
 		
@@ -76,14 +76,12 @@ public class PostController {
 	@PostMapping("/modify") 
 	public String modify(PostVO post, Criteria cri, RedirectAttributes rttr) {
 		
-		log.info("modify: " + post);
-		
 		service.modify(post);
 		
 		return "redirect:/post/list" + cri.getListLink();
 	}
 	
-	@PostMapping("/remove")   //   /board/remove
+	@PostMapping("/remove")
 	public String remove(@RequestParam("pst_no") Long pst_no, Criteria cri, RedirectAttributes rttr) {
 		
 		service.delete(pst_no);

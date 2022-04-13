@@ -105,94 +105,200 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form" action="/post/write" method="post">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="pst_title">글 제목</label>
-                  <input type="text" class="form-control" id="pst_title" name="pst_title">
-                </div>
-                <div class="row">
-	                <div class="col-md-6">
-	                  <label for="pst_writer">작성자</label>
-	                  <input type="text" class="form-control" id="pst_writer" name="pst_writer"
-	                    value="<c:out value='${userStatus.user_nick}' />" readonly>
-	                </div>    
-                  	<div class="col-md-6">
-	                  <label for="pst_writer">아이디</label>
-	                  <input type="text" class="form-control" id="user_id" name="user_id"
-	                    value="<c:out value='${userStatus.user_id}' />" readonly>
-	               	</div>
-                </div>
+            <form role="form" action="/post/modify" method="post" id="modifyForm">
+            	<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum }" />'>
+	              <input type="hidden" name="amount" value='<c:out value="${cri.amount }" />'>
+	              <input type="hidden" name="type" value='<c:out value="${cri.type }" />'>
+	              <input type="hidden" name="keyword" value='<c:out value="${cri.keyword }" />'>
+	              
+	              <div class="box-body">
+	              	<div class="form-group">
+	                  <label for="pst_no">글 번호</label>
+	                  <input type="text" class="form-control" id="pst_no" name="pst_no" value="${post.pst_no }" readonly>
+	                </div>
+	                <div class="form-group">
+	                  <label for="pst_title">글 제목</label>
+	                  <input type="text" class="form-control" id="pst_title" name="pst_title" value="${post.pst_title }">
+	                </div>
+	                <div class="row">
+		                <div class="col-md-6">
+		                  <label for="pst_writer">작성자</label>
+		                  <input type="text" class="form-control" id="pst_writer" name="pst_writer"
+		                    value="<c:out value='${userStatus.user_nick}' />" readonly>
+		                </div>    
+	                  	<div class="col-md-6">
+		                  <label for="pst_writer">아이디</label>
+		                  <input type="text" class="form-control" id="user_id" name="user_id"
+		                    value="<c:out value='${userStatus.user_id}' />" readonly>
+		               	</div>
+	                </div>
                 
                 <div class="form-group">
                   <label for="pst_content">내용</label>
-                  <textarea class="form-control" rows="3" id="pst_content" name="pst_content"></textarea>
+                  <textarea class="form-control" rows="3" id="pst_content" name="pst_content">value="${post.pst_content }"</textarea>
                   <script>
                     CKEDITOR.replace('pst_content', { height: 500 });
                   </script>
                 </div>
+                
+                <div class="form-group">
+                  <label for="pst_wr_date">RegDate</label> <!-- pattern="yyyy-MM-dd"  날짜포맷이 에러가 발생된다.-->
+                  <input type="text" class="form-control" id="pst_wr_date" name="pst_wr_date" value="<fmt:formatDate value="${post.pst_wr_date }" pattern="yyyy/MM/dd"/>" readonly="readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pst_update_date">Update Date</label>
+                  <input type="text" class="form-control" id="pst_update_date" name="pst_update_date" value="<fmt:formatDate value="${post.pst_update_date }" pattern="yyyy/MM/dd"/>" readonly="readonly">
+                </div>
               </div>
               <!-- /.box-body -->
 
-              <!-- 파일업로드및 파일목록 출력위치-->
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="box box-primary">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">파일 첨부</h3>
-                    </div>
-                    <div class="box-body">
-                      <div class="form-group uploadDiv">
-                        <input type="file" name="uploadFile" multiple>
-                      </div>
-                      <div class="uploadResult">
-                        <ul></ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary" id="btn_post">저장</button>
+                <button id="btnModify" type="submit" class="btn btn-primary">Modify</button>
+                <button id="btnRemove" type="button" class="btn btn-danger">Remove</button>
+                <button id="btnList" type="button" class="btn btn-info">List</button>
               </div>
             </form>
           </div>
         </div>
       </div>
+      
+      <!-- 파일업로드및 파일목록 출력위치-->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">File Attach</h3>
+				</div>
+				<div class="box-body">
+					<div class="form-group uploadDiv">
+						<input type="file" name="uploadFile" multiple>
+					</div>
+					<div class="uploadResult">
+            <ul></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
       <%@ include file="/WEB-INF/views/include/footer.jsp" %>
   </div><!-- content -->
   <script>
-    //CKEditor
-    $(document).ready(function(){
+    // CKEditor 작업구문.
+	$(document).ready(function(){
+		
+		let ckeditor_config = {
+			resize_enabled : false,
+			enterMode : CKEDITOR.ENTER_BR,
+			shiftEnterMode : CKEDITOR.ENTER_P,
+			toolbarCanCollapse : true,
+			removePlugins : "elementspath",
+			
+			filebrowserUploadUrl : "/editor/imageUpload"  // /editor/imageUpload. 이미지 업로드시 업로드탭 보기
+				
+		};
+		
+		CKEDITOR.replace('content', ckeditor_config);
+		
+		// 4.8.0 (Standard)
+		// alert(CKEDITOR.version);  
+		
+	});
+</script>
 
-      let ckeditor_config = {
-
-        resize_enabled : false,
-        enterMode : CKEDITOR.ENTER_BR,
-        shiftEnterMode : CKEDITOR.ENTER_P,
-        toolbarCanCollapse: true,
-        removePlugins : "elementspath",
-
-        filebrowserUploadUrl : "/editor/imageUpload"
-
-      };
-
-      CKEDITOR.replace('pst_content', ckeditor_config);
-
-    });
-  </script>
-  <script>
+<script>
 
   $(document).ready(function(){
-	// 업로드 파일을 선택시 change이벤트가 발생
+
+    let formObj = $("#modifyForm");
+
+    $("#btnList").on("click", function(){
+
+      formObj.attr("action", "/post/list");
+      formObj.attr("method", "get");
+
+      let pageNumTag = $("input[name='pageNum']").clone();
+      let amountTag = $("input[name='amount']").clone();
+      let keywordTag = $("input[name='type']").clone();
+      let typeTag = $("input[name='keyword']").clone();
+
+      formObj.empty(); // 폼 모든 내용 제거.
+
+      formObj.append(pageNumTag);
+      formObj.append(amountTag);
+      formObj.append(keywordTag);
+      formObj.append(typeTag);
+
+
+      formObj.submit();
+      
+    });
+
+    $("#btnRemove").on("click", function(){
+
+      if(confirm("게시물을 삭제하겠습니까?")){
+        formObj.attr("action", "/post/remove");
+        formObj.submit();
+      }
+      
+    });
+
+  });
+
+</script>
+
+<script>
+
+  $(document).ready(function(){
+	
+	let bno = '${ post.pst_no}'; 
+	
+	$.getJSON("/post/getAttachList", {pst_no: pst_no}, function(arr){
+	    
+	let uploadUL = $(".uploadResult ul");
+
+    let str = "";
+
+    $(arr).each(function(i, obj) {
+
+      if(obj.fileType){
+        // image file
+        let fileCalPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+        str += "<li data-path='" + obj.uploadPath + "'";
+        str += " data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName +"' data-type='" + obj.fileType + "'>";
+        str += "<div>";
+        str += "<span>" + obj.fileName + "</span>";
+        str += "<button type='button' data-file='" + fileCalPath + "' ";
+        str += "data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+        str += "<img src='/display?fileName=" + fileCalPath + "'>";
+        str += "</div>";
+        str += "</li>";
+      }else{
+        // 일반 file
+        let fileCalPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+        let fileLink = fileCalPath.replace(new RegExp(/\\/g), "/");
+        
+        str += "<li data-path='" + obj.uploadPath + "'";
+        str += " data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName +"' data-type='" + obj.fileType + "'>";
+        str += "<div>";
+        str += "<span>" + obj.fileName + "</span>";
+        str += "<button type='button' data-file='" + fileCalPath + "' ";
+        str += "data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+        str += "<img src='/resources/img/attach.png'>";
+        str += "</div>";
+        str += "</li>";
+      }
+    });
+
+    uploadUL.append(str);  
+  });
+	  
+	  
+	// 업로드 file 선택 시 change event 발생
     $("input[type='file']").change(function(e){
 
-      // <input type="file" name="uploadFile" multiple>
-
-      let formData = new FormData(); // <form>태그 수준에 해당하는 객체
-      let inputFile = $("input[name='uploadFile']"); // 컬렉션(배열)
+      let formData = new FormData();
+      let inputFile = $("input[name='uploadFile']");
 
       let files = inputFile[0].files;
 
@@ -203,23 +309,20 @@
         }
 
         formData.append("uploadFile", files[i]);
+        
       }
 
       $.ajax({
-        url: "/uploadAjaxAction", // 파일업로드 처리주소
+        url: "/uploadAjaxAction",
         processData: false,
         contentType: false,
         data:formData,
         type:'POST',
         dataType:"json",
-        success: function(result){ // result: 업로드된 파일첨부정보가 List컬렉션으로 스프링으로부터 받아옴.
-          console.log(result);  // AttachFileDTO 클래스
-
-          	// 첨부된 파일정보를 출력
+        success: function(result){
       		showUploadResult(result);
         }
       });
-
 
     });
 
@@ -253,6 +356,7 @@
       $(uploadResultArr).each(function(i, obj) {
 
         if(obj.image){
+        	
           let fileCalPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
           str += "<li data-path='" + obj.uploadPath + "'";
           str += " data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName +"' data-type='" + obj.image + "'>";
@@ -263,10 +367,10 @@
           str += "<img src='/display?fileName=" + fileCalPath + "'>";
           str += "</div>";
           str += "</li>";
-
-
-
+          
         }else{
+        	
+          // 일반 file
           let fileCalPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
           let fileLink = fileCalPath.replace(new RegExp(/\\/g), "/");
           
@@ -279,40 +383,30 @@
           str += "<img src='/resources/img/attach.png'>";
           str += "</div>";
           str += "</li>";
+          
         }
       });
-
-      console.log(str);
 
       uploadUL.append(str);
 
     }
 
-
-
     let formObj = $("form[role='form']");
 
-    $("button[type='submit']").on("click", function(e){
-      e.preventDefault();
-
-      console.log("submit click");
+    // 수정 동작
+    $("#btnModify").on("click", function(e){
+      e.preventDefault(); // 전송기능 취소
 
       let str = "";
 
       $(".uploadResult ul li").each(function(i, obj){
         let jobj = $(obj);
 
-        console.dir(jobj);
-        console.log("------------------");
-        console.log(jobj.data("filename"));
-
         str += "<input type='hidden' name='attachList[" + i + "].fileName' value='" + jobj.data("filename") + "'>";
         str += "<input type='hidden' name='attachList[" + i + "].uuid' value='" + jobj.data("uuid") + "'>";
         str += "<input type='hidden' name='attachList[" + i + "].uploadPath' value='" + jobj.data("path") + "'>";
         str += "<input type='hidden' name='attachList[" + i + "].fileType' value='" + jobj.data("type") + "'>";
       });
-
-      console.log(str);
 
       formObj.append(str);
       formObj.submit();
@@ -321,13 +415,10 @@
 
     $(".uploadResult").on("click", "button", function(){
 
-      console.log("delete file");
-
       let targetFile = $(this).data("file");
       let type = $(this).data("type");
 
       let targetli = $(this).closest("li");
-
 
       $.ajax({
         url: '/deletedFile',

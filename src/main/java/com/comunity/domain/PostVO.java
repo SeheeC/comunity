@@ -9,6 +9,7 @@ import lombok.Data;
 public class PostVO {
 	private Long pst_no;
 	private String pst_title;
+	private String user_id;
 	private String pst_writer;
 	private Date pst_wr_date;
 	private Date pst_update_date;

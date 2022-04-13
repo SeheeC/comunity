@@ -231,15 +231,20 @@
 					</div>
 				</div>
 			</div>
-			<!--prev,page number, next 를 클릭하면 아래 form이 작동된다.-->
-			<form id="actionForm" action="/post/list" method="get">
-				<!--list.jsp 가 처음 실행되었을 때 pageNum의 값을 사용자가 선택한 번호의 값으로 변경-->
-				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
-				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-				<input type="hidden" name="type" value="${pageMaker.cri.type}">
-				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
-				<!--글번호추가-->
-			</form>
+			
+			<div class="row">
+				<div class="col-sm-8">
+					<form id="actionForm" action="/post/list" method="get">
+						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+						<input type="hidden" name="type" value="${pageMaker.cri.type}">
+						<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+					</form>
+				</div>
+				<div class="col-sm-4">
+					<a href="/post/write" class="btn btn-lg btn-secondary fw-bold border-white bg-white join-btn">글 쓰기</a>
+				</div>
+			</div>
 
 
 		</div><!-- paging-container -->
@@ -249,19 +254,36 @@
   </div><!-- cover-container -->
 
   <script>
-    $(document).ready(function () {
+   	$(document).ready(function() {
 
-      $(".move").on("click", function (e) {
+		let actionForm = $("#actionForm");
+		
+		// 리스트에서 제목 클릭시 동작
+		$(".move").on("click", function(e) {
 
-        e.preventDefault();
+			e.preventDefault();
 
-        let bno = $(this).attr("href");
-        console.log("글 번호" + bno)
+			let pst_no = $(this).attr("href");
+			console.log("글번호" + pst_no);
 
-        location.href = "/post/get?bno=" + bno;
+			actionForm.append("<input type='hidden' name='pst_no' value='" + $(this).attr("href") + "'>");
+			actionForm.attr("action", "/post/get");
 
-      });
-    });
+			actionForm.submit();
+
+		});
+
+		$(".paginate_button a").on("click", function(e){
+			e.preventDefault();
+
+			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+
+			console.log("click");
+
+			actionForm.submit();
+		});
+		
+    }); // paging end
   </script>
 
 </body>

@@ -45,14 +45,14 @@
 			<nav class="nav nav-masthead justify-content-center float-md-end">
 			
 				<!-- 로그인 이전 상태 표시 -->
-				<c:if test="${sessionScope.loginStatus == null }">
+				<c:if test="${sessionScope.userStatus == null }">
 					<a class="nav-link active" aria-current="page" href="/">홈</a>
 					<a class="nav-link" href="/post/list">게시판</a>
 					<a class="nav-link" href="/member/login">로그인</a>
 				</c:if>
 				
 				<!-- 로그인 이후 상태 표시 -->
-				<c:if test="${sessionScope.loginStatus != null }">
+				<c:if test="${sessionScope.userStatus != null }">
 					<a class="nav-link active" aria-current="page" href="/">홈</a>
 					<a class="nav-link" href="/post/list">게시판</a>
 					<a class="nav-link" href="/member/mypage">나의 정보</a>
